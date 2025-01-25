@@ -1,32 +1,109 @@
-# DCNN for Machine RUL Prediction using Time-series Data
+# TURBO: Predicting Remaining Useful Life (RUL) of Turbojet Engines
 
-In the session I will talk on RUL (Remaining Useful Life) estimation of a machine using sensor data. I will use a realistic multivariate time-series data for leveraging the power of deep neural networks in the hands-on. RUL is the remaining time or cycles that the machine is likely to operate without any failure. By estimating RUL the operator can decide the frequency of scheduled maintenance and avoid unplanned downtime. We will be focusing on building a DCNN (Deep Convolutional Neural Networks) model for the prediction.
+## Overview
+TURBO is a Python-based project for predicting the Remaining Useful Life (RUL) of turbojet engines using both traditional machine learning and deep learning approaches. The project processes sensor data from engines, generates time-series sequences, and trains models such as a Generalized Linear Model (GLM) and a Deep Convolutional Neural Network (DCNN).
 
-[Download Data](https://data.nasa.gov/Aerospace/CMAPSS-Jet-Engine-Simulated-Data/ff5v-kuh6)
+This repository provides tools for preprocessing, visualization, model training, and evaluation.
 
-### Turbofan Jet Engine
-<img src='pics/engine_schematic.jpg' width=500>
+## Features
+- **Data Preprocessing**: RUL calculation, operating condition encoding, feature scaling, and exponential smoothing.
+- **Data Visualization**: Sensor trends and RUL distribution plots.
+- **Traditional ML Model**: Generalized Linear Model (GLM) with SnapML's LinearRegression.
+- **Deep Learning Model**: DCNN with convolutional and fully connected layers for regression.
+- **Time-Series Preparation**: Sequence generation for engine sensor data.
+- **Metrics**: Evaluate models using RMSE and R² scores.
 
-### Degradation Data for Prognostic Algorithm Development
-<img src='pics/data_challenges.jpg' width=500>
+## Installation
 
-### Damage Propagation Modeling
-<img src='pics/operative_margins.jpg' width=500>
+### Prerequisites
+- Python 3.8+
+- Required libraries:
+  - `numpy`
+  - `pandas`
+  - `matplotlib`
+  - `tensorflow`
+  - `snapml`
+  - `scikit-learn`
 
-### Run to failure data
-In figure, the degradation profiles of historical run-to-failure data sets from an engine are shown in blue and the current data from the engine is shown in red. Based on the profile the engine most closely matches, the RUL is estimated to be around 65 cycles.
+Install the dependencies using pip:
+```bash
+pip install -r requirements.txt
+```
 
-<img src='pics/run_to_failure_plot.jpg' width=500>
+## Usage
 
-### References:
-[1] NASA Datasets: https://www.nasa.gov/content/prognostics-center-of-excellence-data-set-repository
+### 1. Initialize the Project
+```python
+from turbo import TURBO
 
-[2] https://www.kaggle.com/datasets/behrad3d/nasa-cmaps
+# Initialize and preprocess data
+turbo = TURBO()
+```
 
-[3] Data Set Citation: A. Saxena and K. Goebel (2008). "Turbofan Engine Degradation Simulation Data Set", NASA Prognostics Data Repository, NASA Ames Research Center, Moffett Field, CA
+### 2. Visualize Data
+```python
+# Visualize sensor trends and RUL distribution
+turbo.plot()
+```
 
-[4] https://www.mathworks.com/company/newsletters/articles/three-ways-to-estimate-remaining-useful-life-for-predictive-maintenance.html 
+### 3. Train a GLM Model
+```python
+# Train a Generalized Linear Model (GLM)
+turbo.model_GLM()
+```
 
-[5] https://www.mathworks.com/help/predmaint/ug/remaining-useful-life-estimation-using-convolutional-neural-network.html
+### 4. Prepare Data for DCNN
+```python
+# Preprocess data for DCNN
+turbo.prepare_data_DCNN()
+```
 
-[6] https://github.com/datrikintelligence/stacked-dcnn-rul-phm21
+### 5. Train a DCNN Model
+```python
+# Build and train the DCNN model
+turbo.build_train_model(plot=True, epochs=20)
+```
+
+### 6. Evaluate the Model
+```python
+# Evaluate the trained DCNN
+turbo.model_eval()
+```
+
+## File Structure
+```
+.
+|-- turbo.py                # Main Python class for data processing and modeling
+|-- requirements.txt        # List of dependencies
+|-- data/
+|   |-- train_FD001.txt     # Training data
+|   |-- test_FD001.txt      # Testing data
+|   |-- RUL_FD001.txt       # Actual RUL for testing
+|-- README.md               # Project documentation
+```
+
+## Data Description
+The dataset consists of sensor readings for multiple turbojet engines:
+- **Training Data**: Time-series data up to engine failure.
+- **Testing Data**: Time-series data up to an evaluation point.
+- **RUL File**: Ground-truth RUL values for the testing dataset.
+
+### Columns in the Dataset
+- `unit_no`: Engine ID.
+- `time_cycles`: Operational cycles.
+- `op_setting_*`: Operating settings.
+- `sensor_*`: Sensor readings.
+
+## Model Architecture
+The DCNN architecture includes:
+1. **Convolutional Layers**: Extract spatial features from sensor data.
+2. **Pooling Layers**: Downsample feature maps.
+3. **Dropout Layers**: Prevent overfitting.
+4. **Fully Connected Layers**: Combine extracted features for RUL prediction.
+
+## Evaluation Metrics
+- **Root Mean Squared Error (RMSE)**: Measures prediction accuracy.
+- **R² Score**: Indicates model fit.
+
+## Acknowledgments
+The project uses the NASA C-MAPSS dataset for engine degradation simulations.

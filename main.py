@@ -1,12 +1,3 @@
-"""main.py: Turbo Jet Engine RUL Prediction"""
-
-__author__ = "Jidhu Mohan M"
-__license__ = "GNU GPL"
-__version__ = "0.1.0"
-__maintainer__ = "Jidhu Mohan M"
-__email__ = "Jidhu.Mohan@gmail.com"
-__status__ = "Development"
-
 # %% import libraries for data handling
 import pandas as pd
 import numpy as np
@@ -47,9 +38,9 @@ class TURBO:
         self.read_data()
 
     def read_data(self,
-                    filename='dataset/train_FD001.txt',
-                  filename_X="dataset/test_FD001.txt",
-                  filename_y="dataset/RUL_FD001.txt"):
+                filename='dataset/train_FD001.txt',
+                filename_X="dataset/test_FD001.txt",
+                filename_y="dataset/RUL_FD001.txt"):
         """read data from file and create train and test data
 
         Args:
