@@ -61,6 +61,8 @@ class TURBO:
                                   header=None, 
                                   names=['RUL'])
 
+
+    '''Function to get the RUL of a turbofan engine at a given time cycle'''
     def _add_RUL(self, df):
         """add RUL column to dataframe
 
